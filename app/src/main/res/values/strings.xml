@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="action_camera">Camera</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_capture">Capture</string>
+    <string name="action_cancel">Cancel</string>
+
+    <string name="label_original">Original Image + Detections</string>
+    <string name="label_cropped">Cropped Reading Region</string>
+    <string name="label_ocr_input">Resized OCR Input</string>
+    <string name="label_result">Detected Temperature</string>
+
+    <string name="result_placeholder">--</string>
+    <string name="result_no_reading">No reading detected</string>
+    <string name="result_no_digits">No digits detected</string>
+</resources>

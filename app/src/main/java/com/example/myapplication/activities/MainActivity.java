@@ -44,8 +44,8 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "TemperatureOCR";
-    private static final String OBJECT_MODEL_FILE = "best_float16.tflite";
-    private static final String OCR_MODEL_FILE = "latest_ocr_best.tflite";
+    private static final String OBJECT_MODEL_FILE = "best_float.tflite";
+    private static final String OCR_MODEL_FILE = "latest_ocr_best1.tflite";
 
     private ImageView imgOriginal;
     private ImageView imgCropped;
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageCapture = new ImageCapture.Builder()
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+                .setTargetRotation(previewView.getDisplay().getRotation())
                 .build();
 
         CameraSelector cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA;
@@ -245,8 +246,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Bitmap croppedBitmap = ImageUtils.cropBitmap(originalBitmap, bestReading.box);
-        Bitmap blackAndWhiteBitmap = ImageUtils.toBlackAndWhite(croppedBitmap);
-        Bitmap resizedBitmap = ImageUtils.resizeBitmap(blackAndWhiteBitmap, ocrDetector.getInputWidth(), ocrDetector.getInputHeight());
+        Bitmap resizedBitmap = ImageUtils.preprocessLcd(croppedBitmap, ocrDetector.getInputWidth(), ocrDetector.getInputHeight(), false);
 
         List<Detection> digitDetections = ocrDetector.detect(resizedBitmap);
         Bitmap ocrBoxedBitmap = ImageUtils.drawDetections(resizedBitmap, digitDetections);

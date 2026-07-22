@@ -97,7 +97,7 @@ public class OCRDetector implements AutoCloseable {
             decodeLegacyGrid(output, outputShape, candidates);
         }
 
-        return NMS.apply(candidates, IOU_THRESHOLD);
+        return NMS.apply(candidates, IOU_THRESHOLD, true);
     }
 
     private void decodeEndToEnd(float[][][] output, int numDetections, boolean columnsFirst, List<Detection> candidates) {

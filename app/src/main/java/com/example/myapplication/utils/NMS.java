@@ -15,6 +15,16 @@ public final class NMS {
      * Greedy, per-class non-maximum suppression, matching Ultralytics' default NMS behavior.
      */
     public static List<Detection> apply(List<Detection> detections, float iouThreshold) {
+        return apply(detections, iouThreshold, false);
+    }
+
+    /**
+     * Greedy non-maximum suppression. When {@code classAgnostic} is true, overlapping boxes
+     * are compared regardless of predicted class — needed for single-digit slots, where the
+     * model sometimes emits two different digit classes (e.g. "2" and "5") both overlapping
+     * the same box; per-class NMS would keep both since it never compares across classes.
+     */
+    public static List<Detection> apply(List<Detection> detections, float iouThreshold, boolean classAgnostic) {
         List<Detection> sorted = new ArrayList<>(detections);
         Collections.sort(sorted, (a, b) -> Float.compare(b.confidence, a.confidence));
 
@@ -32,7 +42,7 @@ public final class NMS {
                     continue;
                 }
                 Detection other = sorted.get(j);
-                if (current.classId != other.classId) {
+                if (!classAgnostic && current.classId != other.classId) {
                     continue;
                 }
                 if (current.box.iou(other.box) > iouThreshold) {
